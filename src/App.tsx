@@ -1,37 +1,241 @@
-import {useEffect,useState} from 'react';
-import {ArrowRight,BookOpen,BriefcaseBusiness,Building2,CalendarDays,Check,ChevronDown,Clock3,Download,GraduationCap,Headphones,Landmark,Mail,Menu,MessageCircle,MonitorPlay,Phone,ShieldCheck,Sparkles,Users,X} from 'lucide-react';
+import { useEffect, useState } from 'react';
+import {
+  ArrowRight, BookOpen, CalendarDays, Check,
+  ChevronDown, Clock3, Download, GraduationCap, Headphones, Landmark, Mail,
+  Menu, MessageCircle, MonitorPlay, Phone, ShieldCheck, Sparkles, Users, X,
+} from 'lucide-react';
 
-const WA='https://wa.link/hrm', INITIAL='https://payhere.lk/pay/o6aade963', FULL='https://payhere.lk/pay/o1daad9f5';
-const audiences=[['A/L සම්පූර්ණ කළ සිසුන්','වෘත්තීයමය උසස් අධ්‍යාපන මාර්ගයක් ආරම්භ කිරීමට.'],['විශ්වවිද්‍යාල සිසුන්','HRM සහ පරිපාලන දැනුම තම උපාධියට එක් කරගැනීමට.'],['රාජ්‍ය හා පෞද්ගලික සේවකයන්','වෘත්තීය කුසලතා වර්ධනය සහ ඉදිරි ප්‍රගතිය සඳහා.'],['කළමනාකරුවන් හා පරිපාලන නිලධාරීන්','නවීන කාර්ය මණ්ඩල කළමනාකරණ භාවිතයන් ශක්තිමත් කිරීමට.'],['ව්‍යවසායකයන්','තම කණ්ඩායම් සහ ආයතන වඩා හොඳින් මෙහෙයවීමට.'],['HR වෘත්තියකට පිවිසෙන්නන්','මානව සම්පත් ක්ෂේත්‍රයේ ශක්තිමත් පදනමක් ගොඩනගා ගැනීමට.']];
-const benefits=['PSB University මගින් පිරිනමන Diploma සහතිකය','සම්පූර්ණයෙන්ම Online — Zoom හරහා','මාස 6ක වෘත්තීයමය අධ්‍යයනය','Live lectures සහ recordings','රැකියා ක්ෂේත්‍රයට අදාළ ප්‍රායෝගික දැනුම','උපාධි අධ්‍යයනයට ප්‍රගති මාර්ගයක්','සිංහල මාධ්‍යයෙන් පැහැදිලි ඉගැන්වීම','WhatsApp හරහා ශිෂ්‍ය සහාය'];
-const modules=['Human Resource Management','Administration','Employment Law','Industrial Psychology','Organizational Behaviour','HR Onboarding and Offboarding'];
-const faqs=[['පාඨමාලා කාලය කොපමණද?','මාස 6කි.'],['පාඨමාලාව සම්පූර්ණයෙන්ම online ද?','ඔව්. සජීවී දේශන Zoom හරහා පැවැත්වේ.'],['දේශන මාධ්‍යය කුමක්ද?','සිංහල මාධ්‍යයෙනි. අවශ්‍ය Academic සහ technical terms ඉංග්‍රීසියෙන් භාවිත වේ.'],['දේශන පැවැත්වෙන්නේ කවදාද?','සෑම බදාදා සහ බ්‍රහස්පතින්දා දිනකම රාත්‍රී 8.00 සිට 10.00 දක්වා.'],['Recordings ලැබෙනවාද?','ඔව්. අදාළ දේශන recordings ලබාගත හැක.'],['ශිෂ්‍යත්ව ගාස්තුව කොපමණද?','සාමාන්‍ය ගාස්තුව LKR 48,000යි. 50% skill-development scholarship යටතේ LKR 24,000යි.'],['වාරිකව ගෙවිය හැකිද?','ඔව්. LKR 6,000 බැගින් වාරික 4කින් ගෙවිය හැක. එක්වර ගෙවීමේ විශේෂ ගාස්තුව LKR 19,000යි.'],['Diploma සහතිකය පිරිනමන්නේ කවුද?','PSB University විසින්. සපයන ලද නිල තොරතුරු අනුව එය ශ්‍රී ලංකා විශ්වවිද්‍යාල ප්‍රතිපාදන කොමිෂන් සභාව පිළිගත් විශ්වවිද්‍යාලයකි.'],['උපාධි මාර්ගයක් තිබේද?','ඔව්. විශ්වවිද්‍යාලයේ ඇතුළත් වීමේ සහ අධ්‍යයන කොන්දේසිවලට යටත්ව B.Sc. in HRM & Business Strategy වෙත direct-entry මාර්ගයක් සඳහන් වේ.'],['ලියාපදිංචි වන්නේ කෙසේද?','LKR 6,000 මුල් වාරිකය නිල PayHere සබැඳියෙන් ගෙවන්න, නැතහොත් 071 525 8653 WhatsApp හරහා සහාය ලබාගන්න.']];
-const nav=[['සුදුසුකම්','#audience'],['පාඨමාලාව','#curriculum'],['ගාස්තු','#pricing'],['ප්‍රශ්න','#faq']];
-const recognitionRows=[
-  [['ugc.png','UGC Sri Lanka Recognized'],['decc.png','DECC'],['sdfl.png','SDFL — functioning under Ministry of Education'],['psb-iau.png','PSB University Cambodia and International Association of Universities'],['ieac.png','IEAC — International Education Accreditation Council'],['wes.png','WES — World Education Services'],['inqaahe.png','INQAAHE Full Member'],['asic.png','ASIC']],
-  [['cpd.png','CPD Member — The CPD Certification Service'],['uk-accredited.png','UK Accredited University'],['unesco.png','UNESCO'],['whed.png','WHED — World Higher Education Database'],['the.png','Times Higher Education World University Rankings 2025']]
+const WHATSAPP = 'https://wa.link/hrm';
+const INITIAL_PAYMENT = 'https://payhere.lk/pay/o6aade963';
+const FULL_PAYMENT = 'https://payhere.lk/pay/o1daad9f5';
+
+const navigation = [
+  ['Who It’s For', '#audience'], ['Curriculum', '#curriculum'], ['Lecturers', '#lecturers'],
+  ['Fees', '#pricing'], ['FAQs', '#faq'],
 ];
-const guestLecturers=[
-  {name:'Mr. Nuwan Jayasinghe',subject:'Employment Law',image:'/lecturers/nuwan-jayasinghe.webp',alt:'Mr. Nuwan Jayasinghe, Employment Law visiting lecturer',description:'Attorney-at-Law with 8+ years of experience in banking and legal operations.',qualifications:['Attorney-at-Law','Banking & Legal Operations']},
-  {name:'Ms. Sadamali Herath',subject:'Industrial Psychology',image:'/lecturers/industrial-psychology-lecturer.webp',alt:'Ms. Sadamali Herath, Industrial Psychology visiting lecturer',description:'Guest lecturer specializing in Industrial Psychology and Applied Psychology.',qualifications:['BA (Special) — University of Colombo','Postgraduate in Psychology — University of Peradeniya','MSc Applied Psychology — Cardiff Metropolitan University']},
-  {name:'Michael Ranuka (Life Skill Guru) Gamage',subject:'Personal & Professional Development',image:'/lecturers/personal-development-lecturer.webp',alt:'Michael Ranuka Gamage, personal development and HRM visiting lecturer',description:'Personal Development Expert and lecturer at CIPM, ICBT Campus and CCBM.',qualifications:['Doctorate (Reading) — LUC Malaysia','MBA — AeU','Pg. Dip. Level 7 — CIM UK']}
+
+const benefits = [
+  { image: '/images/benefits/Artboard-01.png', alt: 'PSB University diploma certificate' },
+  { image: '/images/benefits/Artboard-02.png', alt: 'Online Zoom delivery' },
+  { image: '/images/benefits/Artboard-07.png', alt: 'Six-month career-focused programme' },
+  { image: '/images/benefits/Artboard-08.png', alt: 'Live lectures and recordings' },
+  { image: '/images/benefits/Artboard-03.png', alt: 'Practical workplace knowledge' },
+  { image: '/images/benefits/Artboard-04.png', alt: 'Academic pathway to degree-level study' },
+  { image: '/images/benefits/Artboard-05.png', alt: 'Sinhala instruction' },
+  { image: '/images/benefits/Artboard-06.png', alt: 'WhatsApp support' },
 ];
-function Container({children,className=''}:{children:React.ReactNode,className?:string}){return <div className={'container '+className}>{children}</div>}
-function Btn({href,children,kind='primary',event}:{href:string,children:React.ReactNode,kind?:'primary'|'secondary'|'light',event:string}){return <a className={'btn '+kind} href={href} target={href.startsWith('http')?'_blank':undefined} rel={href.startsWith('http')?'noopener noreferrer':undefined} data-cta={event}>{children}<ArrowRight size={18}/></a>}
-function SectionTitle({eyebrow,title,copy}:{eyebrow:string,title:string,copy?:string}){return <div className="section-title"><span>{eyebrow}</span><h2>{title}</h2>{copy&&<p>{copy}</p>}</div>}
-function Countdown(){const target=Date.parse('2026-08-26T20:00:00+05:30');const [now,setNow]=useState(Date.now());useEffect(()=>{const id=setInterval(()=>setNow(Date.now()),1000);return()=>clearInterval(id)},[]);const diff=target-now;if(diff<=0)return <p className="expired">මීළඟ intake එක තහවුරු කිරීමට SITC Campus අමතන්න.</p>;const units=[['දින',864e5],['පැය',36e5],['මිනිත්තු',6e4],['තත්පර',1e3]] as const;let left=diff;return <div className="countdown">{units.map(([label,size])=>{const n=Math.floor(left/size);left%=size;return <div key={label}><strong>{String(n).padStart(2,'0')}</strong><span>{label}</span></div>})}</div>}
-function Header(){const [open,setOpen]=useState(false);return <header><Container className="header-inner"><a href="#top" className="brand"><img src="/sitc-logo.jpg" alt="SITC Campus"/></a><nav className={open?'open':''} aria-label="ප්‍රධාන මෙනුව">{nav.map(([l,h])=><a key={h} href={h} onClick={()=>setOpen(false)}>{l}</a>)}</nav><Btn href="#pricing" event="header_registration">ලියාපදිංචි වන්න</Btn><button className="menu" aria-label="මෙනුව" aria-expanded={open} onClick={()=>setOpen(!open)}>{open?<X/>:<Menu/>}</button></Container></header>}
-export function App(){return <><Header/><main id="top"><section className="hero"><Container><div className="announce"><Sparkles size={17}/> 50% Skill Development Scholarship — LKR 6,000කින් අදම ආරම්භ කරන්න</div><div className="hero-grid"><div><div className="trust"><ShieldCheck size={17}/> PSB University Awarded • 15 Credits</div><h1>Diploma in <em>Human Resource Management</em> and Administration</h1><p className="sinhala-lead">මානව සම්පත් කළමනාකරණයේ සහ පරිපාලනයේ වෘත්තීයමය අනාගතයට ශක්තිමත් පදනමක්.</p><p className="hero-copy">සිංහල මාධ්‍යයෙන්, සජීවී Zoom දේශන සමඟ මාස 6කින් ඔබේ කළමනාකරණ දැනුම සහ වෘත්තීය හැකියාව ගොඩනගා ගන්න.</p><div className="hero-actions"><Btn href="#pricing" event="hero_scholarship">ශිෂ්‍යත්වය ලබාගන්න</Btn><Btn href="/course-guide.pdf" kind="secondary" event="course_guide_download"><Download size={18}/> Course Guide</Btn></div><div className="hero-meta"><span><Clock3/> මාස 6</span><span><MonitorPlay/> Online / Zoom</span><span><CalendarDays/> 2026 අගෝස්තු 26 • 8.00 PM</span></div></div><aside className="hero-card"><div className="orb"><Users/></div><p>ඊළඟ Intake එක</p><strong>26 AUG 2026</strong><span>Wednesday • 8.00 PM</span><hr/><small>සෑම බදාදා සහ බ්‍රහස්පතින්දා<br/>8.00 PM – 10.00 PM</small><a href="https://wa.link/hrm" target="_blank" rel="noopener noreferrer" data-cta="whatsapp_click"><MessageCircle/> WhatsApp විමසීම්</a></aside></div></Container></section>
-<section className="recognition" aria-labelledby="recognition-heading"><Container><h2 id="recognition-heading">ACCREDITED &amp; RECOGNIZED BY</h2><div className="recognition-rows">{recognitionRows.map((row,i)=><div className={'recognition-row row-'+(i+1)} key={i}>{row.map(([file,alt])=><figure key={file}><img src={'/recognition/'+file} alt={alt} loading="lazy" decoding="async"/></figure>)}</div>)}</div><p>Recognitions, memberships and accreditations shown relate to the awarding institution and associated educational bodies as described in the official programme documentation.</p></Container></section>
-<section id="audience" className="section light"><Container><SectionTitle eyebrow="ඔබ වෙනුවෙන්ම" title="මෙම පාඨමාලාව සුදුසු කාටද?" copy="වෘත්තීය ජීවිතයේ මීළඟ පියවර සැලසුම් කරන ඔබට."/><div className="cards audience">{audiences.map(([t,d],i)=><article className="card" key={t}><div className="icon">{[<GraduationCap/>,<BookOpen/>,<BriefcaseBusiness/>,<Users/>,<Building2/>,<Sparkles/>][i]}</div><h3>{t}</h3><p>{d}</p></article>)}</div></Container></section>
-<section className="credential-showcase section" aria-labelledby="credentials-heading"><Container><div className="credential-heading"><span>YOUR QUALIFICATION</span><h2 id="credentials-heading">ඔබේ අනාගතයට වටිනා <em>වෘත්තීය සුදුසුකමක්</em> පිළිගත් විශ්වවිද්‍යාල Diploma සහතිකයක් සමඟ උපාධිය දක්වා අධ්‍යාපනික ගමනක්.</h2><p>මානව සම්පත් කළමනාකරණය සහ පරිපාලනය පිළිබඳ Diploma පාඨමාලාව සම්පූර්ණ කිරීමෙන් පසු ලැබෙන වෘත්තීය සහ අධ්‍යාපනික වටිනාකම.</p></div><div className="showcase-cards"><article className="showcase-card"><div className="showcase-visual cover"><img src="/showcase/sitc-hrm-convocation.png" alt="SITC Campus convocation award presentation" loading="lazy" decoding="async"/><strong>Official Convocation Material</strong></div><div className="showcase-copy"><span>CONVOCATION</span><h3>ඔබේ නමින් උපාධි ප්‍රදාන අත්දැකීම</h3><p>SITC Campus උපාධි ප්‍රදාන අවස්ථා සහ ඔබගේ අධ්‍යාපනික ජයග්‍රහණය අභිමානයෙන් සටහන් කරගැනීම පිළිබඳ නිල තොරතුරු course guide හි බලන්න.</p><small>භෞතික convocation සහභාගීත්වය අදාළ සංවිධාන හා සුදුසුකම් කොන්දේසිවලට යටත් වේ.</small></div></article><article className="showcase-card"><div className="showcase-visual contain"><img src="/showcase/sitc-convocation-gallery.jpg" alt="Official SITC Campus 2024 HRM programme convocation announcement" loading="lazy" decoding="async"/><strong>Sample Certificate &amp; Transcript</strong><span>Official HRM programme material</span></div><div className="showcase-copy"><span>AWARDING CREDENTIAL</span><h3>විශ්වවිද්‍යාල Diploma සහතිකය සහ Transcript</h3><p>PSB University විසින් පිරිනමන Diploma සහතිකය සහ අධ්‍යයන ප්‍රගතිය සටහන් කරන Transcript එක.</p><small>නිල certificate සහ transcript samples සඳහා HRM Course Guide බලන්න. පෞද්ගලික identifiers මෙහි පෙන්වන්නේ නැත.</small></div></article><article className="showcase-card"><div className="showcase-visual contain verification-image"><img src="/showcase/sitc-certificate-verification.png" alt="Official SITC Campus certificate-verification portal graduation illustration" loading="lazy" decoding="async"/><strong>Certificate Verification</strong><div className="mini-path"><b>HRM Diploma</b><ArrowRight/><b>15 Credits</b><ArrowRight/><b>B.Sc.</b></div><a className="verify-link" href="https://portal.sitc.lk/verify-certificate" target="_blank" rel="noopener noreferrer">Official verification portal <ArrowRight/></a></div><div className="showcase-copy"><span>PROGRESSION</span><h3>සහතික සත්‍යාපනය සහ උපාධියට මඟ</h3><p>Certificate verification පහසුකම සහ B.Sc. in HRM &amp; Business Strategy උපාධි පාඨමාලාවට ඉදිරියට යාමේ අවස්ථාව.</p><small>උපාධි ප්‍රවේශය සහ credit exemptions අදාළ විශ්වවිද්‍යාලයේ admission සහ academic conditions වලට යටත් වේ.</small></div></article></div><div className="recognition-panel"><ShieldCheck/><p>මානව සම්පත් කළමනාකරණය සහ පරිපාලනය පිළිබඳ මෙම Diploma පාඨමාලාව සම්පූර්ණ කිරීමෙන් පසු, නිල පාඨමාලා ලේඛනයේ ශ්‍රී ලංකා විශ්වවිද්‍යාල ප්‍රතිපාදන කොමිෂන් සභාව පිළිගත් විශ්වවිද්‍යාලයක් ලෙස සඳහන් <em>PSB University</em> වෙතින් Diploma සහතිකය සහ Transcript එක ලබාගැනීමේ අවස්ථාව හිමිවේ. අදාළ සුදුසුකම් සහ විශ්වවිද්‍යාල කොන්දේසි අනුව <em>B.Sc. in HRM &amp; Business Strategy</em> වෙත ඉදිරියට යාමේ මාර්ගයක්ද සඳහන් වේ.</p></div></Container></section>
-<section className="section"><Container><div className="split"><div><SectionTitle eyebrow="වැදගත් තේරීමක්" title="මෙම Diploma පාඨමාලාව තෝරාගන්නේ ඇයි?"/><p className="large-copy">රැකියාව සමඟ පහසුවෙන් ඉගෙනගන්න. මානව සම්පත් සහ පරිපාලන ක්ෂේත්‍රයේ ප්‍රායෝගික පදනමක් ගොඩනගා ගන්න.</p><Btn href={WA} event="whatsapp_click">උපදේශකයෙකු සමඟ කතා කරන්න</Btn></div><div className="checklist">{benefits.map(x=><div key={x}><Check/>{x}</div>)}</div></div></Container></section>
-<section className="path section"><Container><SectionTitle eyebrow="Academic Progression" title="ඔබේ උසස් අධ්‍යාපන මාර්ගය"/><div className="steps"><div><b>01</b><GraduationCap/><strong>Diploma</strong><span>15 Credits</span></div><ArrowRight/><div><b>02</b><BookOpen/><strong>B.Sc.</strong><span>HRM & Business Strategy</span></div><ArrowRight/><div><b>03</b><Landmark/><strong>Postgraduate</strong><span>Future study options</span></div></div><p className="note">Direct entry, exemptions සහ ඉදිරි අධ්‍යයනය විශ්වවිද්‍යාලයේ admission හා academic conditions වලට යටත් වේ.</p></Container></section>
-<section id="curriculum" className="section light"><Container><div className="curriculum"><div><SectionTitle eyebrow="Academic Profile" title="ඉගෙනගන්නා ප්‍රධාන ක්ෂේත්‍ර" copy="නිල course guide හි පැහැදිලිව හඳුනාගත හැකි අධ්‍යයන ක්ෂේත්‍ර."/><p className="note left">සම්පූර්ණ module grouping එක නිල course guide එකෙන් තහවුරු කරගන්න. අපැහැදිලි නාම මෙහි අනුමාන කර නොමැත.</p></div><div className="module-list">{modules.map((m,i)=><div key={m}><span>{String(i+1).padStart(2,'0')}</span><strong>{m}</strong><BookOpen/></div>)}</div></div></Container></section>
-<section className="experience section"><Container><div className="experience-grid"><div><span className="kicker">LEARNING EXPERIENCE</span><h2>ඔබේ කාලයට ගැළපෙන සජීවී අධ්‍යයනය</h2><p>නිවසේ සිට සම්බන්ධ වෙමින්, lecturer සහාය සහ peer discussions සමඟ ක්‍රියාකාරීව ඉගෙනගන්න.</p></div><div className="facts">{[[Clock3,'මාස 6'],[CalendarDays,'බදාදා සහ බ්‍රහස්පතින්දා'],[MonitorPlay,'8.00 PM – 10.00 PM'],[BookOpen,'සිංහල මාධ්‍යය'],[Users,'Live Zoom Lectures'],[Headphones,'Recordings + WhatsApp Support']].map(([I,t]:any)=><div key={t}><I/><span>{t}</span></div>)}</div></div></Container></section>
-<section className="lecturers section light" aria-labelledby="lecturer-heading"><Container><SectionTitle eyebrow="VISITING LECTURER PROFILES" title="Special Guest Lectures within the Programme" copy="මානව සම්පත් කළමනාකරණය, කම්කරු නීතිය, ආයතනික මනෝවිද්‍යාව සහ වෘත්තීය සංවර්ධනය පිළිබඳ පළපුරුදු ආරාධිත දේශකයින්."/><article className="lead-lecturer"><img src="/lecturers/ranga-yudara.webp" alt="Mr. Ranga Yudara, Head of Department and Senior Lecturer" loading="lazy" decoding="async"/><div><span className="subject-badge">LEAD LECTURER</span><h2 id="lecturer-heading">Mr. Ranga Yudara</h2><h3>Head of the Department / Senior Lecturer</h3><p>Department of Human Resources Management</p><ul><li>MBS — University of Colombo</li><li>Certified Trainer in HRD — SLITAD</li><li>CAB II — CA · D.TEFL — UK</li></ul></div></article><div className="lecturer-grid">{guestLecturers.map(l=><article className="lecturer-card" key={l.name}><img src={l.image} alt={l.alt} loading="lazy" decoding="async"/><span className="subject-badge">{l.subject}</span><h3>{l.name}</h3><p>{l.description}</p><ul>{l.qualifications.map(q=><li key={q}>{q}</li>)}</ul></article>)}</div><p className="lecturer-note">Lecturer names, roles and qualifications are reproduced from the official HRM programme documentation. Michael Ranuka Gamage’s profile also identifies him as a Lecturer at CIPM (SL).</p></Container></section>
-<section id="pricing" className="pricing section"><Container><SectionTitle eyebrow="50% SCHOLARSHIP ACTIVE" title="ඔබේ අනාගතය LKR 6,000කින් ආරම්භ කරන්න"/><div className="price-grid"><article className="price-card featured"><span className="ribbon">වඩාත් නම්‍යශීලී</span><p>සාමාන්‍ය ගාස්තුව <s>LKR 48,000</s></p><h3>LKR 24,000</h3><small>50% ශිෂ්‍යත්ව ගාස්තුව</small><div className="payment"><strong>LKR 6,000 × 4</strong><span>වාරික හතරකින්</span></div><Btn href={INITIAL} event="initial_payment">මුල් වාරිකය ගෙවන්න — LKR 6,000</Btn></article><article className="price-card"><span className="ribbon alt">එක්වර ගෙවීමේ offer</span><p>සම්පූර්ණ ගාස්තුව</p><h3>LKR 19,000</h3><small>One-time full payment</small><div className="payment"><strong>LKR 5,000 ඉතිරියක්</strong><span>ශිෂ්‍යත්ව ගාස්තුවට සාපේක්ෂව</span></div><Btn href={FULL} kind="secondary" event="full_payment">සම්පූර්ණ ගාස්තුව ගෙවන්න</Btn></article></div><div className="secure"><ShieldCheck/> Payments are completed securely on the external PayHere website. This page does not collect card details.</div></Container></section>
-<section className="deadline section"><Container><span className="kicker">2026 AUGUST INTAKE</span><h2>ආරම්භයට ඉතිරි කාලය</h2><Countdown/><p>26 August 2026 • 8.00 PM • Asia/Colombo</p><div className="hero-actions center"><Btn href={INITIAL} kind="light" event="final_registration">මගේ ස්ථානය තහවුරු කරන්න</Btn><Btn href={WA} kind="secondary" event="whatsapp_click"><MessageCircle size={18}/> WhatsApp</Btn></div></Container></section>
-<section id="faq" className="section light"><Container><SectionTitle eyebrow="ඔබට ඇති ප්‍රශ්න" title="නිතර අසන ප්‍රශ්න"/><div className="faqs">{faqs.map(([q,a])=><details key={q}><summary>{q}<ChevronDown/></summary><p>{a}</p></details>)}</div></Container></section>
-<section className="final-cta"><Container><div><h2>HRM වෘත්තීය ගමන අදම ආරම්භ කරන්න.</h2><p>ලියාපදිංචිය සහ පාඨමාලා විස්තර සඳහා අපගේ Diploma Support කණ්ඩායම අමතන්න.</p></div><div><Btn href={WA} kind="light" event="whatsapp_click"><MessageCircle/> Chat on WhatsApp</Btn><a className="text-link" href="tel:+94715258653" data-cta="phone_call"><Phone/> 071 525 8653</a></div></Container></section></main>
-<footer><Container><div className="footer-grid"><div><img src="/sitc-logo.jpg" alt="SITC Campus"/><p>Diploma in Human Resource Management and Administration</p></div><div><h3>Contact</h3><a href="tel:+94715258653">Diploma: 071 525 8653</a><a href="tel:+94114532139">Hotline: 011 453 2139</a><a href="tel:+94813138404">Voice: 081 313 8404 / 8405</a><a href="mailto:info@sitc.lk"><Mail/> info@sitc.lk</a></div><div><h3>Locations</h3><p>World Trade Center, Level 26,<br/>East Tower, Colombo 01</p><p>208, Hospital Road, Gampola</p></div><div><h3>Quick Links</h3>{nav.map(([l,h])=><a href={h} key={h}>{l}</a>)}<a href="/course-guide.pdf">Course Guide</a></div></div><div className="legal"><p>Institutional recognition statements refer to information supplied in the official course material. Programme progression remains subject to academic conditions.</p><span>© {new Date().getFullYear()} SITC Campus. All rights reserved.</span></div></Container></footer><div className="mobile-cta"><a href={WA}><MessageCircle/> WhatsApp</a><a href="#pricing"><GraduationCap/> Register</a></div><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify({'@context':'https://schema.org','@type':'Course',name:'Diploma in Human Resource Management and Administration',description:'A six-month, fully online Sinhala-medium diploma programme delivered by SITC Campus and awarded by PSB University.',provider:{'@type':'Organization',name:'SITC Campus',email:'info@sitc.lk',telephone:'+94 11 453 2139',address:{'@type':'PostalAddress',streetAddress:'World Trade Center, Level 26, East Tower',addressLocality:'Colombo 01',addressCountry:'LK'}},timeRequired:'P6M',inLanguage:['si','en']})}}/></>}
+
+const modules = ['Human Resource Management', 'Administration', 'Employment Law', 'Industrial Psychology', 'Organisational Behaviour', 'HR Onboarding and Offboarding'];
+
+const progressionSteps = [
+  {
+    icon: GraduationCap,
+    title: 'Diploma in HRM & Administration',
+    description: 'Build a strong foundation in Human Resource Management and Administration through a practical, career-focused diploma programme.',
+    meta: '6 Months',
+    label: 'Start Your Academic Journey',
+  },
+  {
+    icon: BookOpen,
+    title: 'B.Sc. in HRM & Business Strategy',
+    description: 'Progress from the Diploma into the B.Sc. in HRM & Business Strategy through the available direct academic progression pathway.',
+    meta: 'Direct Degree Entry',
+    label: 'Continue to Bachelor’s Level',
+  },
+  {
+    icon: BookOpen,
+    title: 'Postgraduate Studies',
+    description: 'Continue building your academic and professional knowledge through advanced postgraduate-level study after completing your bachelor’s degree.',
+    meta: 'Advanced Learning Opportunities',
+    label: 'Develop Specialist Knowledge',
+  },
+  {
+    icon: GraduationCap,
+    title: 'Master’s Degree',
+    description: 'Strengthen your strategic knowledge, leadership capabilities and professional expertise through Master’s-level academic study.',
+    meta: 'Advanced Academic Progression',
+    label: 'Build Higher-Level Expertise',
+  },
+  {
+    icon: Landmark,
+    title: 'PhD / Doctoral Pathway',
+    description: 'Progress towards doctoral-level study, advanced research and specialist academic development as the next stage of your academic journey.',
+    meta: 'Highest Academic Progression',
+    label: 'Research & Doctoral Opportunities',
+  },
+];
+
+const faqs = [
+  ['How long is the programme?', 'The programme duration is six months.'],
+  ['Is the programme fully online?', 'Yes. Live lectures are delivered online through Zoom.'],
+  ['What is the language of instruction?', 'Lectures are delivered in Sinhala, with relevant academic and technical terminology presented in English.'],
+  ['When are lectures held?', 'Lectures are scheduled every Wednesday and Thursday from 8:00 PM to 10:00 PM.'],
+  ['Will lecture recordings be available?', 'Yes. Recordings of the relevant lectures will be made available to students.'],
+  ['What is the scholarship fee?', 'The standard fee is LKR 48,000. With the 50% skill-development scholarship, the fee is LKR 24,000.'],
+  ['Can I pay in instalments?', 'Yes. You may pay four instalments of LKR 6,000. A special one-time full payment option of LKR 19,000 is also available.'],
+  ['Who awards the diploma?', 'The diploma is awarded by PSB University, according to the official programme documentation supplied by SITC Campus.'],
+  ['Is there a pathway to a degree?', 'A progression pathway to the B.Sc. in HRM & Business Strategy is available, subject to the university’s admission and academic requirements.'],
+  ['How do I register?', 'Pay the first instalment of LKR 6,000 through the official PayHere link, or contact the programme team on WhatsApp for assistance.'],
+];
+
+const recognitionRows = [
+  [['ugc.png', 'UGC Sri Lanka recognised'], ['decc.png', 'DECC'], ['sdfl.png', 'SDFL'], ['psb-iau.png', 'PSB University and IAU'], ['ieac.png', 'IEAC'], ['wes.png', 'World Education Services'], ['inqaahe.png', 'INQAAHE'], ['asic.png', 'ASIC']],
+  [['cpd.png', 'CPD member'], ['uk-accredited.png', 'UK accredited university'], ['unesco.png', 'UNESCO'], ['whed.png', 'World Higher Education Database'], ['the.png', 'Times Higher Education']],
+];
+
+const guestLecturers = [
+  { name: 'Mr. Nuwan Jayasinghe', subject: 'Employment Law', image: '/lecturers/nuwan-jayasinghe.webp', description: 'Attorney-at-Law with more than eight years of experience in banking and legal operations.', qualifications: ['Attorney-at-Law', 'Banking & Legal Operations'] },
+  { name: 'Ms. Sadamali Herath', subject: 'Industrial Psychology', image: '/lecturers/industrial-psychology-lecturer.webp', description: 'Guest lecturer specialising in industrial psychology and applied psychology.', qualifications: ['BA (Special) — University of Colombo', 'Postgraduate in Psychology — University of Peradeniya', 'MSc Applied Psychology — Cardiff Metropolitan University'] },
+  { name: 'Michael Ranuka Gamage', subject: 'Professional Development', image: '/lecturers/personal-development-lecturer.webp', description: 'Personal development expert and lecturer at CIPM, ICBT Campus and CCBM.', qualifications: ['Doctorate (Reading) — LUC Malaysia', 'MBA — AeU', 'Pg. Dip. Level 7 — CIM UK'] },
+];
+
+function Container({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+  return <div className={`container ${className}`}>{children}</div>;
+}
+
+function Button({ href, children, variant = 'primary', event }: { href: string; children: React.ReactNode; variant?: 'primary' | 'secondary' | 'light'; event: string }) {
+  const external = href.startsWith('http');
+  return <a className={`btn btn-${variant}`} href={href} target={external ? '_blank' : undefined} rel={external ? 'noopener noreferrer' : undefined} data-cta={event}>{children}<ArrowRight size={17} /></a>;
+}
+
+function SectionTitle({ eyebrow, title, copy }: { eyebrow: string; title: string; copy?: string }) {
+  return <div className="section-title"><span>{eyebrow}</span><h2>{title}</h2>{copy && <p>{copy}</p>}</div>;
+}
+
+function Countdown() {
+  const target = Date.parse('2026-09-26T20:00:00+05:30');
+  const [now, setNow] = useState(Date.now());
+  useEffect(() => { const id = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(id); }, []);
+  const diff = target - now;
+  if (diff <= 0) return <p className="expired">Contact SITC Campus to confirm the next available intake.</p>;
+  const units = [['Days', 864e5], ['Hours', 36e5], ['Minutes', 6e4], ['Seconds', 1e3]] as const;
+  let remaining = diff;
+  return <div className="countdown">{units.map(([label, size]) => { const value = Math.floor(remaining / size); remaining %= size; return <div key={label}><strong>{String(value).padStart(2, '0')}</strong><span>{label}</span></div>; })}</div>;
+}
+
+function Header() {
+  const [open, setOpen] = useState(false);
+  return <header className="site-header"><Container className="header-inner">
+    <a href="#top" className="brand" aria-label="SITC Campus home"><img src="/sitc-logo.jpg" alt="SITC Campus" /></a>
+    <nav className={open ? 'open' : ''} aria-label="Main navigation">{navigation.map(([label, href]) => <a key={href} href={href} onClick={() => setOpen(false)}>{label}</a>)}</nav>
+    <Button href="#pricing" event="header_registration">Apply Now</Button>
+    <button className="menu" aria-label="Toggle navigation" aria-expanded={open} onClick={() => setOpen(!open)}>{open ? <X /> : <Menu />}</button>
+  </Container></header>;
+}
+
+export function App() {
+  return <>
+    <Header />
+    <main id="top">
+      <section className="hero">
+        <div className="hero-glow hero-glow-one" /><div className="hero-glow hero-glow-two" />
+        <Container>
+          <div className="announce"><Sparkles size={16} /> 50% Skill-Development Scholarship Available <span>Start with LKR 6,000</span></div>
+          <div className="hero-grid">
+            <div className="hero-content">
+              <h1>Build your future in <em>Human Resource Management</em></h1>
+              <p className="hero-lead">Diploma in Human Resource Management and Administration</p>
+              <p className="hero-copy">Develop practical people-management and administrative skills through a flexible, six-month online programme designed for ambitious professionals.</p>
+              <div className="hero-actions"><Button href="#pricing" event="hero_scholarship">Secure Your Scholarship</Button><Button href="/course-guide.pdf" variant="secondary" event="course_guide_download"><Download size={17} /> Download Course Guide</Button></div>
+              <div className="hero-meta"><span><Clock3 /> 6 months</span><span><MonitorPlay /> Zoom Live Online</span><span><CalendarDays /> Starts 23 September 2026</span></div>
+            </div>
+            <aside className="enrol-card">
+              <div className="enrol-top"><span>Next intake</span><div className="live-dot">Enrolment open</div></div>
+              <div className="date-block"><strong>23</strong><div><b>September 2026</b><span>Wednesday · 8:00 PM</span></div></div>
+              <div className="schedule"><CalendarDays /><div><b>Live lecture schedule</b><span>Wednesdays & Thursdays<br />8:00 PM – 10:00 PM</span></div></div>
+              <div className="scholarship-stat"><span>Scholarship fee</span><strong>LKR 24,000</strong><small>Standard fee: <s>LKR 48,000</s></small></div>
+              <Button href={WHATSAPP} event="whatsapp_click"><MessageCircle size={17} /> Speak to an Advisor</Button>
+            </aside>
+          </div>
+        </Container>
+      </section>
+
+      <section className="recognition" aria-labelledby="recognition-heading"><Container>
+        <div className="recognition-heading"><span>Institutional standing</span><h2 id="recognition-heading">Recognition, Memberships & Accreditations</h2></div>
+        <div className="recognition-rows">{recognitionRows.map((row, i) => <div className={`recognition-row row-${i + 1}`} key={i}>{row.map(([file, alt]) => <figure key={file}><img src={`/recognition/${file}`} alt={alt} loading="lazy" /></figure>)}</div>)}</div>
+        <p>Logos shown relate to the awarding institution and associated educational bodies as described in the official programme documentation.</p>
+      </Container></section>
+
+      <section id="audience" className="section section-soft"><Container>
+        <div className="audience-heading">
+          <SectionTitle eyebrow="Designed for you" title="Who is this programme for?" copy="For those planning the next step in their professional journey." />
+        </div>
+        <div className="audience-grid">
+          <img src="/images/audience/al-students.png" alt="A/L students beginning a career-focused higher education pathway" loading="lazy" decoding="async" />
+          <img src="/images/audience/university-students.png" alt="University students adding HRM and administration knowledge to their degree" loading="lazy" decoding="async" />
+          <img src="/images/audience/employees.png" alt="Public and private sector employees developing professional skills" loading="lazy" decoding="async" />
+          <img src="/images/audience/managers.png" alt="Managers and administrative officers strengthening workforce management skills" loading="lazy" decoding="async" />
+          <img src="/images/audience/entrepreneurs.png" alt="Entrepreneurs learning to lead teams and organisations effectively" loading="lazy" decoding="async" />
+          <img src="/images/audience/hr-career.png" alt="Future HR professionals building a strong human resources foundation" loading="lazy" decoding="async" />
+        </div>
+      </Container></section>
+
+      <section className="section credentials"><Container>
+        <SectionTitle eyebrow="Your qualification" title="A credible foundation for your professional future" copy="Complete the programme, earn your diploma credential and explore an academic pathway towards further study." />
+        <div className="showcase-grid">
+          <article className="showcase-card"><div className="showcase-image"><img src="/showcase/sitc-hrm-convocation.png" alt="SITC Campus convocation award presentation" loading="lazy" /><span>Convocation</span></div><div className="showcase-copy"><h3>Celebrate your achievement</h3><p>Mark your academic milestone through the official SITC Campus convocation experience, subject to applicable arrangements and eligibility.</p></div></article>
+          <article className="showcase-card"><div className="showcase-image contain"><img src="/showcase/diploma-certificate-transcript.png" alt="PSB University diploma certificate and student transcript" loading="lazy" decoding="async" /><span>Credential</span></div><div className="showcase-copy"><h3>Diploma certificate & transcript</h3><p>Receive a diploma certificate awarded by PSB University together with a transcript recording your academic progress.</p></div></article>
+          <article className="showcase-card"><div className="showcase-image contain"><img src="/showcase/verify-and-progress.png" alt="PSB University Diploma in Human Resource Management and Administration certificate" loading="lazy" decoding="async" /><span>Progression</span></div><div className="showcase-copy"><h3>Verify and progress</h3><p>Access online certificate verification and explore a pathway to the B.Sc. in HRM & Business Strategy.</p><a href="https://portal.sitc.lk/verify-certificate" target="_blank" rel="noopener noreferrer">Visit verification portal <ArrowRight /></a></div></article>
+        </div>
+        <img className="credential-banner" src="/images/banner.png" alt="Diploma award, transcript and B.Sc. in HRM and Business Strategy progression information" loading="lazy" decoding="async" />
+      </Container></section>
+
+      <section className="section why"><Container><div className="split">
+        <div className="why-copy"><SectionTitle eyebrow="Why choose this diploma?" title="Career-focused learning that fits your schedule" copy="Study from home, connect with experienced lecturers and build skills you can apply in real workplaces from day one." /><Button href={WHATSAPP} event="whatsapp_click">Talk to a Programme Advisor</Button></div>
+        <div className="benefit-grid">{benefits.map(item => <img key={item.image} src={item.image} alt={item.alt} loading="lazy" decoding="async" />)}</div>
+      </div></Container></section>
+
+      <section className="section path" aria-labelledby="progression-heading"><Container>
+        <div className="section-title"><span>Academic progression</span><h2 id="progression-heading">A pathway designed to take you further</h2><p>Begin with a practical Diploma in HRM &amp; Administration, progress into the B.Sc. in HRM &amp; Business Strategy, and continue your academic journey towards postgraduate, Master’s and doctoral-level study.</p></div>
+        <ol className="progression-steps">
+          {progressionSteps.map(({ icon: Icon, title, description, meta, label }, index) => <li className="progression-item" key={title}>
+            <article className="progression-card">
+              <div className="progression-card-top"><Icon aria-hidden="true" /><span>{String(index + 1).padStart(2, '0')}</span></div>
+              <h3>{title}</h3>
+              <p>{description}</p>
+              <div className="progression-meta"><strong>{meta}</strong><small>{label}</small></div>
+            </article>
+            {index < progressionSteps.length - 1 && <span className="progression-connector" aria-hidden="true"><ArrowRight /></span>}
+          </li>)}
+        </ol>
+        <p className="fine-print">Academic progression and admission are subject to the relevant university’s entry criteria and academic requirements.</p>
+      </Container></section>
+
+      <section id="curriculum" className="section section-soft"><Container><div className="curriculum-grid">
+        <div><SectionTitle eyebrow="Academic profile" title="Build expertise across core HR disciplines" copy="Explore the essential areas of people management and workplace administration identified in the official course guide." /><a className="inline-link" href="/course-guide.pdf"><Download /> View the complete course guide</a></div>
+        <div className="module-list">{modules.map((module, i) => <div key={module}><span>{String(i + 1).padStart(2, '0')}</span><strong>{module}</strong><BookOpen /></div>)}</div>
+      </div></Container></section>
+
+      <section className="section experience"><Container><div className="experience-grid">
+        <div><span className="eyebrow-light">Learning experience</span><h2>Live, supported learning that works around you</h2><p>Join from anywhere, learn directly from lecturers and stay connected through discussions, recordings and dedicated student support.</p></div>
+        <div className="facts">{[[Clock3, 'Six-month programme'], [CalendarDays, 'Wednesday & Thursday'], [MonitorPlay, '8:00 PM – 10:00 PM'], [BookOpen, 'Sinhala medium'], [Users, 'Live Zoom lectures'], [Headphones, 'Recordings & support']].map(([Icon, text]: any) => <div key={text}><Icon /><span>{text}</span></div>)}</div>
+      </div></Container></section>
+
+      <section id="lecturers" className="section section-soft"><Container>
+        <SectionTitle eyebrow="Meet your lecturers" title="Learn from experienced professionals" copy="Gain practical perspective from lecturers with experience across HR, law, psychology and professional development." />
+        <article className="lead-lecturer"><img src="/lecturers/ranga-yudara.webp" alt="Mr. Ranga Yudara" loading="lazy" /><div><span>Lead Lecturer</span><h2>Mr. Ranga Yudara</h2><h3>Head of Department / Senior Lecturer</h3><p>Department of Human Resources Management</p><ul><li>MBS — University of Colombo</li><li>Certified Trainer in HRD — SLITAD</li><li>CAB II — CA · D.TEFL — UK</li></ul></div></article>
+        <div className="lecturer-grid">{guestLecturers.map(lecturer => <article className="lecturer-card" key={lecturer.name}><img src={lecturer.image} alt={lecturer.name} loading="lazy" /><span>{lecturer.subject}</span><h3>{lecturer.name}</h3><p>{lecturer.description}</p><ul>{lecturer.qualifications.map(q => <li key={q}>{q}</li>)}</ul></article>)}</div>
+        <p className="fine-print">Names, roles and qualifications are reproduced from the official HRM programme documentation.</p>
+      </Container></section>
+
+      <section id="pricing" className="section pricing"><Container>
+        <SectionTitle eyebrow="50% scholarship now available" title="Choose the payment plan that works for you" copy="Secure your place with a flexible instalment plan or save more with a one-time payment." />
+        <div className="price-grid">
+          <article className="price-card featured"><span className="price-tag">Most flexible</span><p>Scholarship programme fee</p><div className="old-price">Standard fee <s>LKR 48,000</s></div><h3>LKR 24,000</h3><div className="payment-row"><div><strong>LKR 6,000 × 4</strong><span>Four monthly instalments</span></div><Check /></div><Button href={INITIAL_PAYMENT} event="initial_payment">Pay First Instalment</Button></article>
+          <article className="price-card"><span className="price-tag dark">Best value</span><p>Special one-time payment</p><div className="old-price">Save an additional LKR 5,000</div><h3>LKR 19,000</h3><div className="payment-row"><div><strong>One secure payment</strong><span>No remaining instalments</span></div><Check /></div><Button href={FULL_PAYMENT} variant="secondary" event="full_payment">Pay in Full</Button></article>
+        </div>
+        <p className="secure"><ShieldCheck /> Payments are completed securely on the external PayHere website. This page never collects your card details.</p>
+      </Container></section>
+
+      <section className="section deadline"><Container><span>September 2026 intake</span><h2>Your next chapter starts soon</h2><p>Enrol before the intake begins to secure the current scholarship offer.</p><Countdown /><div className="hero-actions centered"><Button href={INITIAL_PAYMENT} variant="light" event="final_registration">Reserve My Place</Button><Button href={WHATSAPP} variant="secondary" event="whatsapp_click"><MessageCircle size={17} /> Ask a Question</Button></div></Container></section>
+
+      <section id="faq" className="section section-soft"><Container><SectionTitle eyebrow="Frequently asked questions" title="Everything you need to know" copy="Clear answers about the programme, schedule, fees and registration." /><div className="faqs">{faqs.map(([question, answer]) => <details key={question}><summary>{question}<ChevronDown /></summary><p>{answer}</p></details>)}</div></Container></section>
+
+      <section className="final-cta"><Container><div><span>Ready to begin?</span><h2>Take the first step towards your HR career.</h2><p>Our programme team is ready to help with registration and course information.</p></div><div className="final-actions"><Button href={WHATSAPP} variant="light" event="whatsapp_click"><MessageCircle /> Chat on WhatsApp</Button><a href="tel:+94715258653"><Phone /> 071 525 8653</a></div></Container></section>
+    </main>
+
+    <footer><Container><div className="footer-grid"><div className="footer-brand"><img src="/sitc-logo.jpg" alt="SITC Campus" /><p>Diploma in Human Resource Management and Administration</p></div><div><h3>Contact</h3><a href="tel:+94715258653">Diploma: 071 525 8653</a><a href="tel:+94114532139">Hotline: 011 453 2139</a><a href="mailto:info@sitc.lk"><Mail /> info@sitc.lk</a></div><div><h3>Locations</h3><p>World Trade Center, Level 26,<br />East Tower, Colombo 01</p><p>208, Hospital Road, Gampola</p></div><div><h3>Explore</h3>{navigation.map(([label, href]) => <a href={href} key={href}>{label}</a>)}<a href="/course-guide.pdf">Course Guide</a></div></div><div className="legal"><p>Recognition statements refer to information supplied in official course material. Programme progression is subject to academic conditions.</p><span>© {new Date().getFullYear()} SITC Campus. All rights reserved.</span></div></Container></footer>
+    <div className="mobile-cta"><a href={WHATSAPP}><MessageCircle /> WhatsApp</a><a href="#pricing"><GraduationCap /> Apply Now</a></div>
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ '@context': 'https://schema.org', '@type': 'Course', name: 'Diploma in Human Resource Management and Administration', description: 'A six-month online diploma programme delivered by SITC Campus and awarded by PSB University.', provider: { '@type': 'Organization', name: 'SITC Campus', email: 'info@sitc.lk', telephone: '+94 11 453 2139' }, timeRequired: 'P6M', inLanguage: ['si', 'en'] }) }} />
+  </>;
+}
